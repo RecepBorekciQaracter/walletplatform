@@ -20,7 +20,7 @@ public class WalletService {
         this.walletRepository = walletRepository;
     }
 
-    WalletEntity createWallet(CreateWalletRequest request) {
+    public WalletEntity createWallet(CreateWalletRequest request) {
         WalletEntity walletEntity = new WalletEntity(request.getOwnerEmail(), request.getWalletCode(), request.getBalance());
 
         walletEntity.setId(this.nextId++);
@@ -28,11 +28,11 @@ public class WalletService {
         return walletRepository.save(walletEntity);
     }
 
-    WalletEntity getWallet(Long id) {
+    public WalletEntity getWallet(Long id) {
         return walletRepository.findById(id).orElse(null);
     }
 
-    WalletEntity addFunds(Long id, Double amount) {
+    public WalletEntity addFunds(Long id, Double amount) {
         WalletEntity walletEntity = getWallet(id);
 
         walletEntity.addFunds(amount);
@@ -40,13 +40,13 @@ public class WalletService {
         return walletRepository.save(walletEntity);
     }
 
-    WalletEntity spendFunds(Long id, Double amount) {
+    public WalletEntity spendFunds(Long id, Double amount) {
         WalletEntity walletEntity = getWallet(id);
         walletEntity.spendFunds(amount);
         return walletRepository.save(walletEntity);
     }
 
-    List<OperationEntity> getOperations(Long id) {
+    public List<OperationEntity> getOperations(Long id) {
         WalletEntity walletEntity = getWallet(id);
 
         return walletEntity.getOperations();
