@@ -1,32 +1,47 @@
 package com.example.walletplatform.models;
 
-import jakarta.persistence.*;
+import com.example.walletplatform.enums.Type;
 import jakarta.validation.constraints.*;
 
+import java.util.Comparator;
 import java.util.List;
 
-@Entity
-@Table(name="wallets")
 public class Wallet {
-
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Email
-    @Column(name = "owner_email", nullable = false)
     private String ownerEmail;
 
-    @Column(name = "wallet_code", unique = true, nullable = false)
     @Pattern(regexp = "^WLT-[A-Za-z0-9]+$")
     private String walletCode;
 
     @Min(0)
-    @Column(name = "balance", nullable = false)
     private Double balance;
 
-    @OneToMany(mappedBy = "operations")
     private List<Operation> operations;
+
+    public void addFunds(Double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0");
+        }
+        this.balance += amount;
+        Operation operation = new Operation(Type.CREDIT, amount, false);
+        if (amount > 7500) {
+            operation.setSuspicious(true);
+        }
+        operations.add(operation);
+    }
+
+    public void spendFunds(Double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0");
+        }
+        if (amount > this.balance ) {
+            throw new IllegalArgumentException("Amount cannot be greater than balance");
+        }
+        this.balance -= amount;
+        Operation operation = new Operation(Type.DEBIT, amount, false);
+    }
 
     public Wallet() {}
     public Wallet(String ownerEmail, String walletCode, Double balance) {
@@ -66,7 +81,7 @@ public class Wallet {
     }
 
     public List<Operation> getOperations() {
-        return operations;
+        return operations.stream().sorted(Comparator.comparing(Operation::getTimestamp).reversed()).toList();
     }
 
     public void setOperations(List<Operation> operations) {
