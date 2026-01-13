@@ -20,10 +20,10 @@ public class Operation {
 
     public Operation() {}
 
-    public Operation(Type type, Double amount, LocalDateTime timestamp, Boolean suspicious) {
+    public Operation(Type type, Double amount, Boolean suspicious) {
         this.type = type;
         this.amount = amount;
-        this.timestamp = timestamp;
+        this.timestamp = LocalDateTime.now();
         this.suspicious = suspicious;
     }
 
