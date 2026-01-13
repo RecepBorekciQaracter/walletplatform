@@ -19,6 +19,6 @@ public class WalletEntity {
 
     private Double balance;
 
-    @OneToMany(mappedBy = "wallets", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL)
     private List<OperationEntity> operations;
 }
