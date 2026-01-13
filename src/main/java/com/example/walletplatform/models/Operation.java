@@ -1,34 +1,21 @@
 package com.example.walletplatform.models;
 
 import com.example.walletplatform.enums.Type;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name="operations")
 public class Operation {
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "wallet_id")
     private Wallet wallet;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable=false)
     private Type type;
 
-    @Column(nullable=false)
     @Min(0)
     private Double amount;
 
-    @Column(nullable=false)
     private LocalDateTime timestamp;
 
-    @Column(nullable=false)
     private Boolean suspicious;
 
     public Operation() {}
