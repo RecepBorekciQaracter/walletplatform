@@ -3,6 +3,8 @@ package com.example.walletplatform.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.util.List;
+
 @Entity
 @Table(name="wallets")
 public class Wallet {
@@ -22,6 +24,9 @@ public class Wallet {
     @Min(0)
     @Column(name = "balance", nullable = false)
     private Double balance;
+
+    @OneToMany(mappedBy = "operations")
+    private List<Operation> operations;
 
     public Wallet() {}
     public Wallet(String ownerEmail, String walletCode, Double balance) {
@@ -58,5 +63,13 @@ public class Wallet {
 
     public void setBalance(Double balance) {
         this.balance = balance;
+    }
+
+    public List<Operation> getOperations() {
+        return operations;
+    }
+
+    public void setOperations(List<Operation> operations) {
+        this.operations = operations;
     }
 }
