@@ -1,7 +1,6 @@
 package com.example.walletplatform.entities;
 
 import com.example.walletplatform.enums.Type;
-import com.example.walletplatform.models.Wallet;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
